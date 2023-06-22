@@ -1,5 +1,6 @@
+import { renderApp, posts } from "./index.js";
 const personalKey = "olya-myalo";
-const baseHost = "https://webdev-hw-api.vercel.app";
+const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 
 export function getPosts({ token }) {
@@ -13,27 +14,54 @@ export function getPosts({ token }) {
       if (response.status === 401) {
         throw new Error("Нет авторизации");
       }
-
       return response.json();
     })
     .then((responseData) => { 
-      const appPosts = responseData.posts.map((post) => { 
+      const appPosts = responseData.posts.map((post, user) => { 
         return { 
           id: post.id,
-          imageUrl: newImageUrl,
-          createdAt: now(new Date(post.date)),
-          description: text,
-          user: user,
-          likes: [{
+          imageUrl: post.imageUrl,
+          createdAt: post.date,
+          description: post.text,
+          user: {
+            id: user.id,
+            name: user.name,
+            login: user.login,
+            imageUrl: user.image,
+          },
+          likes: [
+            {
               id: user.id,
-              name: user.author.name,
-          }],
+              name: user.name,
+            },
+          ],
           isLiked: false,
-      }; 
-      })
-    })  
+        };
+      });
+
       return appPosts;
+    });
 }
+
+
+export function addPosts(description, imageUrl, token) {
+  return fetch(postsHost, {
+    method: "POST",
+    body: JSON.stringify({
+      description: description,
+      imageUrl: imageUrl,
+    }),
+    headers: {
+      Authorization: token,
+    }
+  }).then((response) => {
+
+    if (response.status === 400) {
+      throw new Error("Ошибка в добавлении");
+    }
+    return response.json();
+  })
+};
 
 // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
 export function registerUser({ login, password, name, imageUrl }) {

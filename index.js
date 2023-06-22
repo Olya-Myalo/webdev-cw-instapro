@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, addPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -19,7 +19,6 @@ import {
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
-export let likes = [];
 
 const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -84,7 +83,7 @@ export const goToPage = (newPage, data) => {
   throw new Error("страницы не существует");
 };
 
-const renderApp = () => {
+export const renderApp = () => {
   const appEl = document.getElementById("app");
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
@@ -111,12 +110,15 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        // TODO: реализовать добавление поста в API
-        console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+        addPosts(description, imageUrl)
+          .then(() => {
+            console.log("Добавляю пост...", { description, imageUrl });
+            goToPage(POSTS_PAGE);
+          })
       },
     });
   }
+
 
   if (page === POSTS_PAGE) {
     return renderPostsPageComponent({

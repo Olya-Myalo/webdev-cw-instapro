@@ -1,49 +1,70 @@
+import { renderHeaderComponent } from "./header-component.js";
+import { renderUploadImageComponent } from "./upload-image-component.js";
+
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+
+  let imageUrl = "";
+
   const render = () => {
+    // TODO: Реализовать страницу добавления поста
     const appHtml = `
-    <body>
-    <div id="app">
-    <div class="page-header">
+    <div class="page-container">
+      <div class="header-container">
+  <div class="page-header">
       <h1 class="logo">instapro</h1>
       <button class="header-button add-or-login-button">
       <div title="Добавить пост" class="add-post-sign"></div>
       </button>
-      <button title="Админ" class="header-button logout-button">Выйти</button>      
-  </div><div class="page-container">  
+      <button title="Админ" class="header-button logout-button">Выйти</button>   
+  </div>
+</div>
       <div class="form">
-        <div class="header-container">
-</div><h3 class="form-title">Добавить пост</h3>
+        <h3 class="form-title">Добавить пост</h3>
         <div class="form-inputs">
           <div class="upload-image-container">
-  <div class="upload=image"> 
+  <div class="upload=image">
+      
             <label class="file-upload-label secondary-button">
-                <input type="file" class="file-upload-input" style="display:none">
+                <input id="image-input" type="file" class="file-upload-input" style="display:none">
                 Выберите фото
-            </label>    
+            </label>
+          
+      
   </div>
 </div>
           <label>
             Опишите фотографию:
-            <textarea class="input textarea" rows="4"></textarea>
+            <textarea id="text-input" class="input textarea" rows="4"></textarea>
             </label>
             <button class="button" id="add-button">Добавить</button>
         </div>
       </div>
     </div>
-  </div>
-  <script type="module" src="./main.js"></script>
-</body>\
   `;
 
     appEl.innerHTML = appHtml;
 
-    document.getElementById("add-button").addEventListener("click", () => {
+    renderHeaderComponent({
+      element: document.querySelector(".header-container"),
+    });
+
+    const uploadImageContainer = appEl.querySelector(".upload-image-container");
+
+    if (uploadImageContainer) {
+      renderUploadImageComponent({
+        element: appEl.querySelector(".upload-image-container"),
+        onImageUrlChange(newImageUrl) {
+          imageUrl = newImageUrl;
+        },
+      });
+    }
+    document.getElementById("add-button").addEventListener("click", (event) => {
+      const text = document.getElementById('text-input').value;
       onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+        description: text,
+        imageUrl: imageUrl,
       });
     });
   };
-
   render();
 }
