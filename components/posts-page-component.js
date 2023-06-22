@@ -3,11 +3,12 @@ import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
 export function renderPostsPageComponent({ appEl }) {
-  const postsHtml = posts.map((post, index) => {
+  const postsHtml = posts.map((post) => {
+    let likes = 0;
     return `
-<li class="post">
-<div class="post-header" data-postId="${post.user.id}" >
-    <img  src="${post.user.imageUrl}" class="post-header__user-image">
+    <li class="post">
+    <div class="post-header" data-user-id="${post.user.id}">
+    <img src="${post.user.imageUrl}" class="post-header__user-image">
     <p class="post-header__user-name">${post.user.name}</p>
 </div>
 <div class="post-image-container">
@@ -18,7 +19,7 @@ export function renderPostsPageComponent({ appEl }) {
     <img src="./assets/images/like-active.svg">
   </button>
   <p class="post-likes-text">
-  ${post.user.id} ${post.user.name}
+  Нравится: <strong>${likes}</strong>
   </p>
 </div>
 <p class="post-text">
@@ -34,7 +35,7 @@ export function renderPostsPageComponent({ appEl }) {
   .join('');
 
   // TODO: реализовать рендер постов из api
-  console.log("Актуальный список постов:", posts);
+  // console.log("Актуальный список постов:", posts);
 
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"

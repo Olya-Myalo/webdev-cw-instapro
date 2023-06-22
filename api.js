@@ -1,4 +1,3 @@
-import { renderApp, posts } from "./index.js";
 const personalKey = "olya-myalo";
 const baseHost = "https://wedev-api.sky.pro";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
@@ -17,17 +16,19 @@ export function getPosts({ token }) {
       return response.json();
     })
     .then((responseData) => { 
-      const appPosts = responseData.posts.map((post, user) => { 
-        return { 
+      const appPosts = responseData.posts.map((post) => {
+        const user = post.user;
+        const likes = post.likes;
+        return {
           id: post.id,
           imageUrl: post.imageUrl,
-          createdAt: post.date,
-          description: post.text,
+          createdAt: post.createdAt,
+          description: post.description,
           user: {
             id: user.id,
             name: user.name,
             login: user.login,
-            imageUrl: user.image,
+            imageUrl: user.imageUrl,
           },
           likes: [
             {
