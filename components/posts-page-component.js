@@ -1,14 +1,7 @@
-import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { renderPostComponent } from "./post-components.js";
 
 export function renderPostsPageComponent({ appEl, posts }) {
-
-  const postsHtml = document
-  
-  // TODO: реализовать рендер постов из api
-  // console.log("Актуальный список постов:", posts);
-
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
    * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
@@ -32,7 +25,8 @@ export function renderPostsPageComponent({ appEl, posts }) {
     postLi.classList.add("post");
     renderPostComponent({element: postLi, post});
     postsContainer.appendChild(postLi)
-  })
+  });
+
 }
 
   

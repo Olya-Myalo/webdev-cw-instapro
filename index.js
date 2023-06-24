@@ -119,7 +119,6 @@ export const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         addPosts(description, imageUrl, getToken())
           .then(() => {
-            console.log("Добавляю пост...", { description, imageUrl });
             goToPage(POSTS_PAGE);
           })
       },
