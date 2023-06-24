@@ -1,39 +1,11 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { renderPostComponent } from "./post-components.js";
 
-export function renderPostsPageComponent({ appEl }) {
-  const postsHtml = posts.map((post) => {
-    let likes = 0;
-    return `
-    <li class="post">
-    <div class="post-header" data-user-id="${post.user.id}">
-    <img src="${post.user.imageUrl}" class="post-header__user-image">
-    <p class="post-header__user-name">${post.user.name}</p>
-</div>
-<div class="post-image-container">
-  <img class="post-image" src="${post.imageUrl}">
-</div>
-<div class="post-likes">
-  <button data-postId="${post.id}" class="like-button">
-    <img src="./assets/images/like-active.svg">
-  </button>
-  <p class="post-likes-text">
-  Нравится: <strong>${likes}</strong>
-  </p>
-</div>
-<p class="post-text">
-  <span class="user-name">${post.user.name}</span>
-  ${post.description}
-</p>
-<p class="post-date">
-  ${post.createdAt}
-</p>
-</li>
-`
-  })
-  .join('');
+export function renderPostsPageComponent({ appEl, posts }) {
 
+  const postsHtml = document
+  
   // TODO: реализовать рендер постов из api
   // console.log("Актуальный список постов:", posts);
 
@@ -45,7 +17,6 @@ export function renderPostsPageComponent({ appEl }) {
               <div class="page-container">
                 <div class="header-container"></div>
                 <ul class="posts">
-                  ${postsHtml}
                 </ul>
               </div>`;
 
@@ -54,12 +25,14 @@ export function renderPostsPageComponent({ appEl }) {
   renderHeaderComponent({
     element: document.querySelector(".header-container"),
   });
-
-  for (let userEl of document.querySelectorAll(".post-header")) {
-    userEl.addEventListener("click", () => {
-      goToPage(USER_POSTS_PAGE, {
-        userId: userEl.dataset.userId,
-      });
-    });
-  }
+   
+  posts.forEach((post) => {
+    const postsContainer = document.querySelector(".posts");
+    const postLi = document.createElement("li");
+    postLi.classList.add("post");
+    renderPostComponent({element: postLi, post});
+    postsContainer.appendChild(postLi)
+  })
 }
+
+  
