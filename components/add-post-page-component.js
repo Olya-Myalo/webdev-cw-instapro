@@ -2,7 +2,6 @@ import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
-
   let imageUrl = "";
 
   const render = () => {
@@ -42,7 +41,13 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   `;
 
     appEl.innerHTML = appHtml;
-
+    function escapeHTML(input) {
+      return input.replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/&/g, '&amp;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#39;');
+    }
     renderHeaderComponent({
       element: document.querySelector(".header-container"),
     });
@@ -58,7 +63,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       });
     }
     document.getElementById("add-button").addEventListener("click", (event) => {
-      const text = document.getElementById('text-input').value;
+      const text = escapeHTML(document.getElementById("text-input").value);
       if (!text) {
         alert("Добавьте комментарий к фотографии...");
         return;
