@@ -1,5 +1,6 @@
 import { renderHeaderComponent } from "./header-component.js";
 import { renderPostComponent } from "./post-components.js";
+import { POSTS_PAGE } from "../routes.js";
 
 export function renderPostsPageComponent({ appEl, posts }) {
   /**
@@ -23,7 +24,7 @@ export function renderPostsPageComponent({ appEl, posts }) {
     const postsContainer = document.querySelector(".posts");
     const postLi = document.createElement("li");
     postLi.classList.add("post");
-    renderPostComponent({element: postLi, post});
+    renderPostComponent({element: postLi, post, page: POSTS_PAGE});
     postsContainer.appendChild(postLi)
   });
 

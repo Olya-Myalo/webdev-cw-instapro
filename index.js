@@ -20,6 +20,7 @@ import { renderUserPostsPageComponent } from "./components/user-post-page-compon
 export let user = getUserFromLocalStorage();
 export let page = null;
 export let posts = [];
+let activeUser = user;
 
 export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined;
@@ -35,7 +36,7 @@ export const logout = () => {
 /**
  * Включает страницу приложения
  */
-export const goToPage = (newPage, data) => {
+export const goToPage = (newPage, userId) => {
   if (
     [
       POSTS_PAGE,
@@ -68,11 +69,11 @@ export const goToPage = (newPage, data) => {
     }
 
     if (newPage === USER_POSTS_PAGE) {
-      const userId = user._id;
       return getUserPosts({userId, token: getToken()})
       .then((newPosts) => {
+        activeUser = newPosts[0].user 
         page = USER_POSTS_PAGE;
-        posts = newPosts.posts;
+        posts = newPosts;
         renderApp();
       })
       .catch((error) => {
@@ -134,10 +135,9 @@ export const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    console.log(posts)
     return renderUserPostsPageComponent({
       appEl, 
-      user, 
+      user: activeUser, 
       posts
     });
   }

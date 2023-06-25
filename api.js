@@ -53,11 +53,8 @@ export function getUserPosts({userId, token}) {
       }
       return response.json();
     })
-    .then((data) => {
-      return { 
-        user: data.user, 
-        posts: data.posts, 
-      }; 
+    .then((responseData) => {
+      return responseData.posts;
     });
 }
 

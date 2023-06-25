@@ -1,4 +1,6 @@
 import { renderHeaderComponent } from "./header-component.js";
+import { renderPostComponent } from "./post-components.js";
+import { USER_POSTS_PAGE } from "../routes.js";
 
 export function renderUserPostsPageComponent({ appEl, user, posts }) {
   const userInfoHtml = `
@@ -7,7 +9,7 @@ export function renderUserPostsPageComponent({ appEl, user, posts }) {
       <p class="posts-user-header__user-name">${user.name}</p>
     </div>
   `;
- 
+
   const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
@@ -18,7 +20,7 @@ export function renderUserPostsPageComponent({ appEl, user, posts }) {
       </ul>
     </div>
   `;
- 
+
   appEl.innerHTML = appHtml;
 
   renderHeaderComponent({
@@ -26,16 +28,15 @@ export function renderUserPostsPageComponent({ appEl, user, posts }) {
   });
 
   const postsContainer = document.querySelector(".posts");
-  
+
   posts.forEach((post) => {
-    if (post.user.id === user.id) {
       const postLi = document.createElement("li");
       postLi.classList.add("post");
-      renderPostComponent({ element: postLi, post });
+      renderPostComponent({ element: postLi, post, page: USER_POSTS_PAGE});
       postsContainer.appendChild(postLi);
-    }
   });
 }
+
   
 
   
