@@ -59,6 +59,14 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
     }
     document.getElementById("add-button").addEventListener("click", (event) => {
       const text = document.getElementById('text-input').value;
+      if (!text) {
+        alert("Добавьте комментарий к фотографии...");
+        return;
+      }
+      if (!imageUrl) {
+        alert("Добавьте фотографию");
+        return;
+      }
       onAddPostClick({
         description: text,
         imageUrl: imageUrl,

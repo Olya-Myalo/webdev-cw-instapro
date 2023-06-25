@@ -1,8 +1,4 @@
-import { addLike } from "./api.js";
-
-export function handleLike(event) {
-    
-  }
+// Здесь будет форматирование даты
   
 
  

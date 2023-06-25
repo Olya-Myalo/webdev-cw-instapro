@@ -1,5 +1,5 @@
 import { addLike, removeLike } from "../api.js";
-import {getToken, goToPage, page} from "../index.js"
+import {getToken, goToPage} from "../index.js"
 import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
 
 export function renderPostComponent({ element, post, page }) { 
