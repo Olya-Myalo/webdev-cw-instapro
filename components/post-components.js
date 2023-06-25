@@ -1,6 +1,8 @@
 import { addLike, removeLike } from "../api.js";
 import {getToken, goToPage} from "../index.js"
 import { POSTS_PAGE, USER_POSTS_PAGE } from "../routes.js";
+import { formatDistanceToNow } from 'date-fns';
+import { ru } from "date-fns/locale";
 
 export function renderPostComponent({ element, post, page }) { 
   let isMainPage = true; 
@@ -17,36 +19,41 @@ export function renderPostComponent({ element, post, page }) {
     likes = `${post.likes[0].name} и еще ${post.likes.length - 1}`;  
   }  
   
-  element.innerHTML = `  
-    ${ 
-      isMainPage  
-      ? `<div class="post-header" data-userId="${post.user.id}">  
-        <img src="${post.user.imageUrl}" class="post-header__user-image">  
-        <p class="post-header__user-name">${post.user.name}</p>  
-      </div>`  
-      : ''  
-    }  
-    <div class="post-user">  
-      <div class="post-image-container">  
-        <img class="post-image" src="${post.imageUrl}">  
-      </div>  
-      <div class="post-likes">  
-        <button data-id="${post.id}" class="like-button">  
-          <img data-like="${post.isLiked}" src="./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}">  
-        </button>  
-        <p class="post-likes-text">  
-          Нравится: <strong class="likes-counter">${likes}</strong>  
-        </p>  
-      </div>  
-      <p class="post-text">  
-        <span class="user-name">${post.user.name}</span>  
-        ${post.description}  
-      </p>  
-      <p class="post-date">  
-        ${post.createdAt}  
-      </p>  
-    </div>  
-  `; 
+  let formateDate = formatDistanceToNow(new Date(post.createdAt), 
+   { addSuffix: true, locale: ru});
+  element.innerHTML = `
+    ${
+      isMainPage
+        ? `<div class="post-header" data-userId="${post.user.id}">
+        <img src="${post.user.imageUrl}" class="post-header__user-image">
+        <p class="post-header__user-name">${post.user.name}</p>
+      </div>`
+        : ""
+    }
+    <div class="post-user">
+      <div class="post-image-container">
+        <img class="post-image" src="${post.imageUrl}">
+      </div>
+      <div class="post-likes">
+        <button data-id="${post.id}" class="like-button">
+          <img data-like="${post.isLiked}" src="./assets/images/${
+    post.isLiked ? "like-active.svg" : "like-not-active.svg"
+  }">
+        </button>
+        <p class="post-likes-text">
+          Нравится: <strong class="likes-counter">${likes}</strong>
+        </p>
+      </div>
+      <p class="post-text">
+        <span class="user-name">${post.user.name}</span>
+        ${post.description}
+      </p>
+      <p class="post-date">
+        ${formateDate}
+      </p>
+    </div>
+  `;
+
   element.querySelector('.like-button')  
        .addEventListener('click', (event) => {  
         const postId = event.target.parentNode.dataset.id;  
