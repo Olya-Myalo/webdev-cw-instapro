@@ -1,3 +1,5 @@
+Приложение доступно по адресу 
+https://olya-myalo.github.io/webdev-cw-instapro/
 # Instapro
 
 MVP аналога популярной соц. сети для обмена фотографиями
