@@ -112,8 +112,13 @@ export const addLike = (postId, token) => {
       Authorization: token,
     },
   })
-  .then((response) => (response.json()))
-  }
+  .then((response) => {
+    if (response.status === 401) {
+      throw new Error("Нет авторизации");
+    }
+    return response.json();
+  })
+}
 
   export const removeLike = (postId, token) => {
     return fetch (postsHost + `/${postId}/dislike`, {
@@ -122,5 +127,10 @@ export const addLike = (postId, token) => {
         Authorization: token,
       },
     })
-    .then((response) => (response.json()))
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+      return response.json();
+    })
     }

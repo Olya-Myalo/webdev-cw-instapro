@@ -54,25 +54,25 @@ export function renderPostComponent({ element, post, page }) {
     </div>
   `;
 
-  element.querySelector('.like-button')  
-       .addEventListener('click', (event) => {  
-        const postId = event.target.parentNode.dataset.id;  
-        const isLiked = event.target.dataset.like;  
-        if (isLiked == "true") {  
-          removeLike(postId, getToken())  
-          .then((result) => {  
-            renderPostComponent({element, post: result.post})  
-          })  
-        } else  {  
-          addLike(postId, getToken())  
-          .then((result) => {  
-          renderPostComponent({element, post: result.post})  
-          })  
-          .catch((error) => {  
-          console.error('Ошибка при постановке лайка:', error);  
-          });  
-        }  
-      })  
+  element.querySelector('.like-button')   
+  .addEventListener('click', (event) => {   
+    const postId = event.target.parentNode.dataset.id;   
+    const isLiked = event.target.dataset.like;   
+    if (isLiked == "true") {   
+      removeLike(postId, getToken())   
+        .then((result) => {   
+          renderPostComponent({element, post: result.post})   
+        })   
+    } else  {   
+      addLike(postId, getToken())   
+        .then((result) => {   
+          renderPostComponent({element, post: result.post}) 
+        })   
+        .catch((error) => {   
+          console.error('Ошибка при постановке лайка:', error);   
+        });   
+    }   
+  });
 
  if (isMainPage) {
       element.querySelector(".post-header")
